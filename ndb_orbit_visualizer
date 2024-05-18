@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desenho de Círculo e Linhas</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+        .controls {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <label for="anguloA">Ângulo A (graus, vermelho):</label>
+        <input type="number" id="anguloA" value="0">
+        <label for="anguloB">Ângulo B (graus, azul):</label>
+        <input type="number" id="anguloB" value="90">
+        <label for="heading">Heading (graus, verde):</label>
+        <input type="number" id="heading" value="45">
+        <button onclick="desenhar()">Desenhar</button>
+    </div>
+    <canvas id="meuCanvas" width="500" height="500"></canvas>
+
+    <script>
+        function desenhar() {
+            const canvas = document.getElementById('meuCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const anguloA = parseFloat(document.getElementById('anguloA').value);
+            const anguloB = parseFloat(document.getElementById('anguloB').value);
+            const heading = parseFloat(document.getElementById('heading').value);
+
+            // Limpar o canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Desenhar o círculo
+            const centroX = canvas.width / 2;
+            const centroY = canvas.height / 2;
+            const raio = 200;
+
+            ctx.beginPath();
+            ctx.arc(centroX, centroY, raio, 0, 2 * Math.PI);
+            ctx.stroke();
+
+            // Função para desenhar uma linha em um determinado ângulo
+            function desenharLinha(angulo, cor, label) {
+                const rad = angulo * (Math.PI / 180);
+                const x1 = centroX + raio * Math.cos(rad);
+                const y1 = centroY + raio * Math.sin(rad);
+
+                ctx.beginPath();
+                ctx.moveTo(centroX, centroY);
+                ctx.lineTo(x1, y1);
+                ctx.strokeStyle = cor;
+                ctx.stroke();
+
+                ctx.fillStyle = cor;
+                ctx.fillText(label, x1, y1);
+            }
+
+            // Desenhar as linhas nos ângulos especificados
+            desenharLinha(anguloA, 'red', 'A');
+            desenharLinha(anguloB, 'blue', 'B');
+            desenharLinha(heading, 'green', 'Heading');
+        }
+
+        // Desenhar pela primeira vez ao carregar a página
+        desenhar();
+    </script>
+</body>
+</html>
