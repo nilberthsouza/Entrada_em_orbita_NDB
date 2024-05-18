@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cálculo de Entradas</title>
+    <style>
+        .limites {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h2>Calculadora de Entradas</h2>
+    <label for="perna_afastamento">PERNA DE AFASTAMENTO:</label>
+    <input type="number" id="perna_afastamento"><br><br>
+
+    <label for="perna_aproximacao">PERNA DE APROXIMAÇÃO:</label>
+    <input type="number" id="perna_aproximacao"><br><br>
+
+    <label for="heading">HEADING:</label>
+    <input type="number" id="heading"><br><br>
+
+    <button onclick="calcular()">Calcular</button>
+
+    <p id="resultado"></p>
+
+    <div class="limites">
+        <p id="limiteA">LIMITE A: -</p>
+        <p id="limiteB">LIMITE B: -</p>
+    </div>
+
+    <script>
+        function ajustarAngulo(angulo) {
+            while (angulo < 0) {
+                angulo += 360;
+            }
+            while (angulo >= 360) {
+                angulo -= 360;
+            }
+            return angulo;
+        }
+
+        function calcular() {
+            let pernaAfastamento = parseFloat(document.getElementById('perna_afastamento').value);
+            let pernaAproximacao = parseFloat(document.getElementById('perna_aproximacao').value);
+            let heading = parseFloat(document.getElementById('heading').value);
+
+            pernaAproximacao = ajustarAngulo(pernaAproximacao);
+            heading = ajustarAngulo(heading);
+
+            let limiteA = ajustarAngulo(pernaAproximacao - 70);
+            let limiteB = ajustarAngulo(pernaAproximacao + 110);
+
+            document.getElementById('limiteA').innerText = "LIMITE A: " + limiteA;
+            document.getElementById('limiteB').innerText = "LIMITE B: " + limiteB;
+
+            let resultado = "";
+
+            if (heading > limiteB) {
+                resultado = "ENTRADA DIRETA";
+            } else if (heading > limiteA && heading < pernaAproximacao) {
+                resultado = "ENTRADA DESLOCADA";
+            } else if (heading > pernaAproximacao && heading < limiteB) {
+                resultado = "ENTRADA PARALELA";
+            } else {
+                resultado = "HEADING fora dos limites especificados";
+            }
+
+            document.getElementById('resultado').innerText = resultado;
+        }
+    </script>
+    
+    <div class="limites">
+        <p id="limiteA">LIMITE A: -</p>
+        <p id="limiteB">LIMITE B: -</p>
+    </div>
+</body>
+</html>
